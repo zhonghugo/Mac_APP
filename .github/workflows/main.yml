@@ -1,0 +1,29 @@
+name: Build Mac App
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install pyinstaller pandas openpyxl
+
+    - name: Build App with PyInstaller
+      run: |
+        pyinstaller -F -w -n "报价拆分工具" "报价拆分工具_V3.PY"
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: mac-app
+        path: dist/报价拆分工具
